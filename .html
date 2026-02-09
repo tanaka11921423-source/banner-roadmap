@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>副業バナー制作事業ロードマップ - Interactive Strategy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Custom Font for Japanese readability */
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: #F9FAFB; /* Warm neutral background */
+            color: #1F2937; /* Dark gray text */
+        }
+
+        /* Chart Container Styling - MANDATORY COMPLIANCE */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Base height */
+            max-height: 400px;
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Interactive Element Styles */
+        .phase-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .active-phase {
+            border-left: 4px solid #10B981; /* Emerald 500 */
+            background-color: #ECFDF5; /* Emerald 50 */
+        }
+        
+        /* Utility for Unicode Icons */
+        .icon-lg {
+            font-size: 2rem;
+            line-height: 2.5rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Chosen Palette: Business Trust (Slate Blue) & Growth (Emerald Green) on Warm Neutral -->
+    <!-- Application Structure Plan: 
+         1. Hero Section: Immediate statement of the 2-person advantage and ultimate goal.
+         2. Revenue Trajectory (Interactive Chart): Visualizes the timeline from 10k to 100k, allowing users to click phases to understand the specific strategy for that revenue band.
+         3. Team Synergy (Interactive Roles): A section to clarify the A/B split, critical for the "2-person system" USP.
+         4. Tactical Phases (Tabs): Deep dive into the specific actions for Prep, Step 1, Step 2, and Step 3.
+         5. Portfolio Strategy (Cards): Visualizes the 5 required portfolio themes with details on hover/click.
+         This structure moves from "Vision" -> "Financials" -> "Operations" -> "Execution", mirroring a logical business planning flow.
+    -->
+    <!-- Visualization & Content Choices:
+         1. Revenue Chart (Line Chart): Chosen to show the *growth trend* over time. Interaction: Clicking points updates the 'Strategy Focus' text.
+         2. Role Distribution (Pie Chart): Chosen to visually represent the *balance* of work. Interaction: Toggling segments details specific tasks.
+         3. Portfolio Cards: Chosen to turn the list of themes into actionable "items" to be collected.
+         4. NO SVG/Mermaid: All icons are Unicode. All charts are Chart.js canvas.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Navigation -->
+    <nav class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-wider">BANNER BIZ ROADMAP <span class="text-emerald-400 text-sm font-normal ml-2">2名体制戦略</span></h1>
+            <div class="hidden md:flex space-x-6 text-sm">
+                <a href="#vision" class="hover:text-emerald-300 transition">事業構想</a>
+                <a href="#roadmap" class="hover:text-emerald-300 transition">収益計画</a>
+                <a href="#team" class="hover:text-emerald-300 transition">チーム体制</a>
+                <a href="#execution" class="hover:text-emerald-300 transition">実行プラン</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="vision" class="bg-white border-b border-gray-200">
+        <div class="container mx-auto px-4 py-16 text-center max-w-4xl">
+            <span class="inline-block py-1 px-3 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold mb-4 tracking-wide">副業から事業化へ</span>
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">初月1万円から月10万円へ。<br>「2名体制」で勝ち抜くステップアップ戦略。</h2>
+            <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                本アプリケーションは、提供された事業ロードマップを可視化したインタラクティブ・ダッシュボードです。
+                「高品質・スピード・安定感」を武器に、クラウドソーシングから直契約へとステップアップするための具体的な道筋を示します。
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 text-left w-full sm:w-64">
+                    <div class="text-2xl mb-1">⚡</div>
+                    <h3 class="font-bold text-slate-800">短期目標 (初月)</h3>
+                    <p class="text-emerald-600 font-bold text-xl">¥10,000</p>
+                    <p class="text-xs text-gray-500 mt-1">実績と評価の獲得を最優先</p>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 text-left w-full sm:w-64">
+                    <div class="text-2xl mb-1">🏢</div>
+                    <h3 class="font-bold text-slate-800">長期目標 (半年後)</h3>
+                    <p class="text-emerald-600 font-bold text-xl">¥100,000</p>
+                    <p class="text-xs text-gray-500 mt-1">継続案件と直契約の確立</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section: Revenue Roadmap -->
+    <section id="roadmap" class="py-16 bg-slate-50">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="mb-10">
+                <h3 class="text-2xl font-bold text-slate-900 mb-3 border-l-4 border-emerald-500 pl-4">収益成長ロードマップ</h3>
+                <p class="text-gray-600">
+                    事業の成長フェーズごとの収益目標と、その段階で注力すべき戦略ポイントを可視化しました。
+                    <span class="font-semibold text-emerald-600">チャートのポイントをクリック</span>すると、各フェーズの詳細戦略が表示されます。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <!-- Interactive Chart -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Dynamic Detail Panel -->
+                <div id="roadmap-details" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col justify-center">
+                    <div class="mb-4">
+                        <span id="phase-badge" class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-sm font-medium">Stepを選択してください</span>
+                    </div>
+                    <h4 id="phase-title" class="text-2xl font-bold text-slate-800 mb-4">チャートをクリックして詳細を表示</h4>
+                    <p id="phase-desc" class="text-gray-600 mb-6 leading-relaxed">
+                        左記のグラフ上のポイント（丸印）をクリックまたはタップすると、そのフェーズにおける具体的なアクションプラン、目標金額、および重視すべきKPIが表示されます。
+                    </p>
+                    
+                    <div class="border-t border-gray-100 pt-4">
+                        <h5 class="font-bold text-slate-700 mb-2">このフェーズの鍵 (Key Focus)</h5>
+                        <ul id="phase-kfs" class="space-y-2">
+                            <li class="flex items-start text-sm text-gray-500">
+                                <span class="mr-2 text-emerald-500">👉</span>
+                                <span>グラフを操作して戦略を確認してください。</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Team Roles -->
+    <section id="team" class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="mb-10">
+                <h3 class="text-2xl font-bold text-slate-900 mb-3 border-l-4 border-blue-500 pl-4">チーム体制と役割分担</h3>
+                <p class="text-gray-600">
+                    2名体制の最大のメリットは「分業によるスピード」と「ダブルチェックによる品質保証」です。
+                    ここではAさん（窓口・進行）とBさん（制作・実務）の役割分担を明確化します。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Role Visualization -->
+                <div class="md:col-span-1">
+                    <div class="bg-slate-50 p-6 rounded-xl h-full flex flex-col items-center justify-center text-center border border-slate-100">
+                        <div class="chart-container" style="height: 250px; max-height: 250px;">
+                            <canvas id="roleChart"></canvas>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-4">役割比率のイメージ</p>
+                    </div>
+                </div>
+
+                <!-- Role Details Cards -->
+                <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Person A -->
+                    <div class="border border-blue-100 rounded-xl p-6 hover:shadow-md transition bg-blue-50/30">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-2xl mr-4">🗣️</div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-800">Aさん (窓口/進行)</h4>
+                                <p class="text-xs text-blue-600 font-semibold">ディレクション & 品質管理</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start"><span class="text-blue-400 mr-2">●</span>クライアント対応・営業</li>
+                            <li class="flex items-start"><span class="text-blue-400 mr-2">●</span>構成案作成・ヒアリング</li>
+                            <li class="flex items-start"><span class="text-blue-400 mr-2">●</span>進捗管理・スケジュール調整</li>
+                            <li class="flex items-start"><span class="text-blue-400 mr-2">●</span><strong>最終検品・納品</strong></li>
+                        </ul>
+                    </div>
+
+                    <!-- Person B -->
+                    <div class="border border-orange-100 rounded-xl p-6 hover:shadow-md transition bg-orange-50/30">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-2xl mr-4">🎨</div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-800">Bさん (制作/実務)</h4>
+                                <p class="text-xs text-orange-600 font-semibold">デザイン & クリエイティブ</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start"><span class="text-orange-400 mr-2">●</span>Photoshopでのデザイン制作</li>
+                            <li class="flex items-start"><span class="text-orange-400 mr-2">●</span>素材探し（写真・イラスト）</li>
+                            <li class="flex items-start"><span class="text-orange-400 mr-2">●</span>リサイズ展開・バリエーション</li>
+                            <li class="flex items-start"><span class="text-orange-400 mr-2">●</span>制作補助業務</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Execution Phases -->
+    <section id="execution" class="py-16 bg-slate-50">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="mb-10">
+                <h3 class="text-2xl font-bold text-slate-900 mb-3 border-l-4 border-indigo-500 pl-4">実行アクションプラン</h3>
+                <p class="text-gray-600">
+                    準備から事業化までを4つのステージに分解。現在のフェーズを選択して、具体的なタスクを確認してください。
+                </p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex flex-wrap gap-2 mb-8" id="phase-tabs">
+                <button onclick="updatePhaseContent('prep')" class="px-6 py-3 rounded-lg text-sm font-bold bg-white text-slate-600 border border-gray-200 hover:bg-indigo-50 hover:text-indigo-600 transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 phase-tab active" data-tab="prep">準備フェーズ</button>
+                <button onclick="updatePhaseContent('step1')" class="px-6 py-3 rounded-lg text-sm font-bold bg-white text-slate-600 border border-gray-200 hover:bg-emerald-50 hover:text-emerald-600 transition shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 phase-tab" data-tab="step1">Step 1: 実績構築</button>
+                <button onclick="updatePhaseContent('step2')" class="px-6 py-3 rounded-lg text-sm font-bold bg-white text-slate-600 border border-gray-200 hover:bg-emerald-50 hover:text-emerald-600 transition shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 phase-tab" data-tab="step2">Step 2: 拡大期</button>
+                <button onclick="updatePhaseContent('step3')" class="px-6 py-3 rounded-lg text-sm font-bold bg-white text-slate-600 border border-gray-200 hover:bg-emerald-50 hover:text-emerald-600 transition shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 phase-tab" data-tab="step3">Step 3: 事業化</button>
+            </div>
+
+            <!-- Dynamic Content Area -->
+            <div id="phase-content-area" class="bg-white rounded-xl shadow p-8 border border-gray-100 min-h-[300px]">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Portfolio Strategy -->
+    <section class="py-16 bg-white border-t border-gray-100">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="mb-10 flex flex-col md:flex-row md:items-center justify-between">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-3 border-l-4 border-pink-500 pl-4">ポートフォリオ戦略</h3>
+                    <p class="text-gray-600">
+                        「何が作れるか」を証明するための必須5ジャンル。これらを準備することで、実績ゼロの状態からでも受注を可能にします。
+                    </p>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <span class="bg-pink-100 text-pink-800 text-xs font-bold px-3 py-1 rounded-full">目標: 架空バナー 5〜10枚</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Portfolio Card 1 -->
+                <div class="group relative bg-slate-50 rounded-xl p-6 border border-slate-100 transition hover:shadow-lg hover:border-pink-200">
+                    <div class="absolute top-4 right-4 text-2xl opacity-20 group-hover:opacity-100 transition">🏖️</div>
+                    <h4 class="font-bold text-slate-800 mb-2">夏セール (季節感)</h4>
+                    <p class="text-xs text-gray-500 mb-4">Target: 20-30代男女 / ECサイト</p>
+                    <div class="bg-white p-3 rounded text-sm text-gray-600 border border-gray-100">
+                        <span class="block font-semibold text-pink-600 text-xs mb-1">POINT</span>
+                        勢いとワクワク感。高彩度な色使い。「70%OFF」などの数字を最大化しお得感を強調。
+                    </div>
+                </div>
+
+                <!-- Portfolio Card 2 -->
+                <div class="group relative bg-slate-50 rounded-xl p-6 border border-slate-100 transition hover:shadow-lg hover:border-pink-200">
+                    <div class="absolute top-4 right-4 text-2xl opacity-20 group-hover:opacity-100 transition">💄</div>
+                    <h4 class="font-bold text-slate-800 mb-2">化粧品 (高級感)</h4>
+                    <p class="text-xs text-gray-500 mb-4">Target: 30-40代女性 / スキンケア</p>
+                    <div class="bg-white p-3 rounded text-sm text-gray-600 border border-gray-100">
+                        <span class="block font-semibold text-pink-600 text-xs mb-1">POINT</span>
+                        清潔感と余白。明朝体を使用し信頼感を演出。透明感のある素材選び。
+                    </div>
+                </div>
+
+                <!-- Portfolio Card 3 -->
+                <div class="group relative bg-slate-50 rounded-xl p-6 border border-slate-100 transition hover:shadow-lg hover:border-pink-200">
+                    <div class="absolute top-4 right-4 text-2xl opacity-20 group-hover:opacity-100 transition">💻</div>
+                    <h4 class="font-bold text-slate-800 mb-2">IT/ビジネス (信頼)</h4>
+                    <p class="text-xs text-gray-500 mb-4">Target: 個人事業主・経理 / BtoB</p>
+                    <div class="bg-white p-3 rounded text-sm text-gray-600 border border-gray-100">
+                        <span class="block font-semibold text-pink-600 text-xs mb-1">POINT</span>
+                        信頼感のあるブルー基調。「悩み(Before)」と「解決(After)」の対比を視覚化。
+                    </div>
+                </div>
+
+                <!-- Portfolio Card 4 -->
+                <div class="group relative bg-slate-50 rounded-xl p-6 border border-slate-100 transition hover:shadow-lg hover:border-pink-200">
+                    <div class="absolute top-4 right-4 text-2xl opacity-20 group-hover:opacity-100 transition">🤝</div>
+                    <h4 class="font-bold text-slate-800 mb-2">求人・採用 (先進的)</h4>
+                    <p class="text-xs text-gray-500 mb-4">Target: 20代デザイナー / ITベンチャー</p>
+                    <div class="bg-white p-3 rounded text-sm text-gray-600 border border-gray-100">
+                        <span class="block font-semibold text-pink-600 text-xs mb-1">POINT</span>
+                        スタイリッシュさ。働く人の笑顔を使い親近感を出す。キャリアアップのイメージ。
+                    </div>
+                </div>
+
+                <!-- Portfolio Card 5 -->
+                <div class="group relative bg-slate-50 rounded-xl p-6 border border-slate-100 transition hover:shadow-lg hover:border-pink-200">
+                    <div class="absolute top-4 right-4 text-2xl opacity-20 group-hover:opacity-100 transition">🍕</div>
+                    <h4 class="font-bold text-slate-800 mb-2">飲食 (シズル感)</h4>
+                    <p class="text-xs text-gray-500 mb-4">Target: 地域住民・家族 / 飲食店</p>
+                    <div class="bg-white p-3 rounded text-sm text-gray-600 border border-gray-100">
+                        <span class="block font-semibold text-pink-600 text-xs mb-1">POINT</span>
+                        暖色系（赤・オレンジ）で食欲喚起。チーズが伸びる等のシズル感ある写真をメインに。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer: Success Factors -->
+    <footer class="bg-slate-900 text-slate-300 py-12">
+        <div class="container mx-auto px-4 max-w-4xl text-center">
+            <h4 class="text-white font-bold text-lg mb-6 tracking-wider uppercase">成功のための重要要因 (KFS)</h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                <div class="bg-slate-800 p-5 rounded-lg border border-slate-700">
+                    <div class="text-emerald-400 font-bold mb-2">01. レスポンス速度</div>
+                    <p class="text-sm">副業だからこそ、返信の速さだけで信頼を勝ち取る。即レスが最大の営業ツール。</p>
+                </div>
+                <div class="bg-slate-800 p-5 rounded-lg border border-slate-700">
+                    <div class="text-emerald-400 font-bold mb-2">02. データの丁寧さ</div>
+                    <p class="text-sm">レイヤー整理や命名規則を徹底する。制作会社などのプロが見た時に「扱いやすい」データを作る。</p>
+                </div>
+                <div class="bg-slate-800 p-5 rounded-lg border border-slate-700">
+                    <div class="text-emerald-400 font-bold mb-2">03. 提案力</div>
+                    <p class="text-sm">指示通りだけでなく、「正攻法」と「インパクト重視」の2案出しを行い、付加価値をつける。</p>
+                </div>
+            </div>
+            <div class="mt-10 text-xs text-slate-500">
+                Data Source: 副業バナー制作事業ロードマップ | Generated for Strategic Planning
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Data Definitions ---
+
+        // Revenue Chart Data
+        const roadmapData = {
+            labels: ['準備期', 'Start (初月)', '2-3ヶ月目', '半年以降'],
+            revenues: [0, 10000, 50000, 100000],
+            strategies: [
+                {
+                    title: "準備フェーズ (Week 1-2)",
+                    desc: "まずは「受注できる状態」を完璧に整える期間。利益は発生しませんが、ここでの土台作りが後のスピードに直結します。",
+                    kfs: ["Photoshop/Figma環境構築", "Google Driveディレクトリ標準化", "ポートフォリオ5種作成", "プロフィール登録（2名体制の強調）"]
+                },
+                {
+                    title: "STEP 1: 実績構築期 (初月)",
+                    desc: "利益よりも「評価」と「スピード感」を重視する期間。低単価でも積極的に受け、プラットフォーム内での評価ランクを上げます。",
+                    kfs: ["タスクではなくプロジェクト案件に応募", "即レス・即納品の実践", "SNSでの制作過程発信", "目標: 手取り1万円"]
+                },
+                {
+                    title: "STEP 2: 拡大期 (2-3ヶ月目)",
+                    desc: "単価アップとセット販売により、効率よく収益を伸ばす期間。リサイズ展開などで客単価を上げます。",
+                    kfs: ["1枚3,000円 / 3枚8,000円のセット導入", "リサイズオプション(+1,000円)", "「売れる」構成案の提示", "目標: 3〜5万円"]
+                },
+                {
+                    title: "STEP 3: 事業化期 (半年以降)",
+                    desc: "クラウドソーシングを脱却し、直契約や継続案件で安定収益を作る期間。ディレクションに注力し始めます。",
+                    kfs: ["制作会社へのパートナー応募", "月額サブスクリプションの提案", "実務の外注化検討", "目標: 10万円/月"]
+                }
+            ]
+        };
+
+        // Phase Tab Content Data
+        const phaseContents = {
+            prep: `
+                <div class="animate-fade-in">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-indigo-100 text-indigo-700 p-3 rounded-full mr-4 text-2xl">🛠️</div>
+                        <div>
+                            <h4 class="text-xl font-bold text-slate-800">準備フェーズ: 環境構築 & ポートフォリオ</h4>
+                            <p class="text-sm text-gray-500">期間目安: 最初の2週間</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-100">
+                            <h5 class="font-bold text-slate-700 mb-3 border-b border-gray-200 pb-2">① 制作環境</h5>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li>✅ <strong>Soft:</strong> Adobe Photoshop (必須), Figma (共有用)</li>
+                                <li>✅ <strong>Drive:</strong> 「クライアント名_案件名」でフォルダ統一</li>
+                                <li>✅ <strong>Font:</strong> 商用利用可能フォントのリスト共有</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-100">
+                            <h5 class="font-bold text-slate-700 mb-3 border-b border-gray-200 pb-2">② 集客準備</h5>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li>✅ <strong>PF:</strong> クラウドワークス、ランサーズ、ココナラ登録</li>
+                                <li>✅ <strong>Profile:</strong> 「2名体制」「ダブルチェック」を明記</li>
+                                <li>✅ <strong>Portfolio:</strong> 5ジャンルの架空バナーを用意</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `,
+            step1: `
+                <div class="animate-fade-in">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-emerald-100 text-emerald-700 p-3 rounded-full mr-4 text-2xl">🌱</div>
+                        <div>
+                            <h4 class="text-xl font-bold text-slate-800">STEP 1: 実績構築期</h4>
+                            <p class="text-sm text-gray-500">目標: 手取り 10,000円 / 優先順位: 評価 > 利益</p>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                        <p class="text-sm text-yellow-800"><strong>戦略:</strong> 低単価（1,000円〜）でも良いので、「プロジェクト形式」で実績数と★5評価を稼ぐ時期です。</p>
+                    </div>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-center bg-white p-3 rounded border border-gray-100 shadow-sm">
+                            <span class="text-emerald-500 font-bold mr-3">ACTION 1</span>
+                            タスク案件ではなく、評価の残るプロジェクト案件に応募する
+                        </li>
+                        <li class="flex items-center bg-white p-3 rounded border border-gray-100 shadow-sm">
+                            <span class="text-emerald-500 font-bold mr-3">ACTION 2</span>
+                            SNS (X/Insta) で「#バナー制作」をつけて制作過程を発信
+                        </li>
+                        <li class="flex items-center bg-white p-3 rounded border border-gray-100 shadow-sm">
+                            <span class="text-emerald-500 font-bold mr-3">ACTION 3</span>
+                            24時間以内の即レスを徹底し、信頼を獲得する
+                        </li>
+                    </ul>
+                </div>
+            `,
+            step2: `
+                <div class="animate-fade-in">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-emerald-100 text-emerald-700 p-3 rounded-full mr-4 text-2xl">📈</div>
+                        <div>
+                            <h4 class="text-xl font-bold text-slate-800">STEP 2: 拡大期</h4>
+                            <p class="text-sm text-gray-500">目標: 30,000 〜 50,000円 / 戦略: セット販売 & 単価アップ</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-white p-4 rounded-lg border border-emerald-100 shadow-sm text-center">
+                            <div class="text-sm text-gray-500 mb-1">基本単価</div>
+                            <div class="font-bold text-xl text-slate-800">1枚 3,000円</div>
+                        </div>
+                        <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200 shadow-sm text-center">
+                            <div class="text-sm text-emerald-600 mb-1 font-bold">お得なセット販売</div>
+                            <div class="font-bold text-xl text-emerald-800">3枚 8,000円</div>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-center bg-white p-3 rounded border border-gray-100 shadow-sm">
+                            <span class="text-emerald-500 font-bold mr-3">OPTION</span>
+                            リサイズ展開（+1,000円）を提案し客単価を上げる
+                        </li>
+                        <li class="flex items-center bg-white p-3 rounded border border-gray-100 shadow-sm">
+                            <span class="text-emerald-500 font-bold mr-3">SKILL</span>
+                            「なぜクリックされるか」を言語化した構成案を提示する
+                        </li>
+                    </ul>
+                </div>
+            `,
+            step3: `
+                <div class="animate-fade-in">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-emerald-100 text-emerald-700 p-3 rounded-full mr-4 text-2xl">🚀</div>
+                        <div>
+                            <h4 class="text-xl font-bold text-slate-800">STEP 3: 事業化期</h4>
+                            <p class="text-sm text-gray-500">目標: 100,000円 / 戦略: 脱プラットフォーム & ストック収入</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800 text-white p-5 rounded-lg mb-6">
+                        <h5 class="font-bold mb-2 flex items-center">🏢 ターゲット変更</h5>
+                        <p class="text-sm text-slate-300">個人事業主から、継続発注のある「広告代理店」「制作会社」へシフトします。</p>
+                    </div>
+                    <div class="space-y-4">
+                         <div class="flex items-start">
+                            <span class="bg-blue-100 text-blue-600 text-xs font-bold px-2 py-1 rounded mt-1 mr-3">営業</span>
+                            <div>
+                                <h6 class="font-bold text-slate-700">アウトバウンド営業</h6>
+                                <p class="text-sm text-gray-600">制作会社の「パートナー募集」にポートフォリオを送付し、外部委託枠を獲得。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="bg-blue-100 text-blue-600 text-xs font-bold px-2 py-1 rounded mt-1 mr-3">契約</span>
+                            <div>
+                                <h6 class="font-bold text-slate-700">サブスクリプション提案</h6>
+                                <p class="text-sm text-gray-600">例：「月額5万円でバナー作り放題（上限10枚）」など、固定収入モデルを提案。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+        };
+
+        // --- Chart Initialization ---
+
+        // Revenue Line Chart
+        const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(ctxRevenue, {
+            type: 'line',
+            data: {
+                labels: roadmapData.labels,
+                datasets: [{
+                    label: '目標収益 (円)',
+                    data: roadmapData.revenues,
+                    borderColor: '#10B981', // Emerald 500
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#10B981',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) { return '¥' + value.toLocaleString(); },
+                            color: '#64748B'
+                        },
+                        grid: { color: '#F1F5F9' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#64748B' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return '目標: ¥' + context.raw.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                onClick: (e, activeElements) => {
+                    if (activeElements.length > 0) {
+                        const index = activeElements[0].index;
+                        updateDetails(index);
+                    }
+                }
+            }
+        });
+
+        // Role Donut Chart
+        const ctxRole = document.getElementById('roleChart').getContext('2d');
+        const roleChart = new Chart(ctxRole, {
+            type: 'doughnut',
+            data: {
+                labels: ['Aさん (窓口/進行)', 'Bさん (制作/実務)'],
+                datasets: [{
+                    data: [40, 60], // Approximate workload split
+                    backgroundColor: ['#3B82F6', '#F97316'], // Blue, Orange
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: { position: 'bottom', labels: { usePointStyle: true, font: { size: 10 } } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- Interaction Logic ---
+
+        // Update Revenue Detail Panel
+        function updateDetails(index) {
+            const data = roadmapData.strategies[index];
+            const badge = document.getElementById('phase-badge');
+            const title = document.getElementById('phase-title');
+            const desc = document.getElementById('phase-desc');
+            const kfsList = document.getElementById('phase-kfs');
+
+            badge.textContent = `Phase ${index}`;
+            title.textContent = data.title;
+            desc.textContent = data.desc;
+            
+            // Clear and populate KFS
+            kfsList.innerHTML = '';
+            data.kfs.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start text-sm text-gray-600 animate-fade-in';
+                li.innerHTML = `<span class="mr-2 text-emerald-500">✓</span> ${item}`;
+                kfsList.appendChild(li);
+            });
+            
+            // Highlight styling for active state in chart is handled by Chart.js built-ins mainly,
+            // but we could add external UI cues if needed.
+        }
+
+        // Tab Switching Logic
+        function updatePhaseContent(phaseId) {
+            // Update Tab Styles
+            document.querySelectorAll('.phase-tab').forEach(tab => {
+                if(tab.dataset.tab === phaseId) {
+                    tab.classList.add('bg-slate-100', 'text-indigo-700', 'border-indigo-300', 'ring-2', 'ring-indigo-500', 'ring-offset-1');
+                    tab.classList.remove('bg-white', 'text-slate-600', 'border-gray-200');
+                } else {
+                    tab.classList.remove('bg-slate-100', 'text-indigo-700', 'border-indigo-300', 'ring-2', 'ring-indigo-500', 'ring-offset-1');
+                    tab.classList.add('bg-white', 'text-slate-600', 'border-gray-200');
+                }
+            });
+
+            // Update Content
+            const contentArea = document.getElementById('phase-content-area');
+            contentArea.innerHTML = phaseContents[phaseId];
+        }
+
+        // Initialize Default State
+        window.addEventListener('load', () => {
+            updateDetails(1); // Default to Step 1
+            updatePhaseContent('prep'); // Default Tab
+        });
+
+        // CSS Animation for smoother transitions
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .animate-fade-in {
+                animation: fadeIn 0.5s ease-out forwards;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+
+    </script>
+</body>
+</html>
